@@ -1,75 +1,109 @@
-# React + TypeScript + Vite
+# 📝 Habit Tracker (HabitTrackerProject)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Полнофункциональное веб-приложение для трекинга привычек. Проект разделен на две части: клиентскую (Frontend) и серверную (Backend).
 
-Currently, two official plugins are available:
+## 🚀 Стек технологий
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Frontend:**
+* **Фреймворк:** React (с использованием React Compiler)
+* **Сборщик:** Vite
+* **Язык:** TypeScript
+* **Стилизация:** Tailwind CSS + `tailwindcss-animate`
+* **UI-компоненты:** shadcn/ui (Radix UI)
+* **Роутинг:** React Router DOM
+* **HTTP-клиент:** Axios
 
-## React Compiler
+**Backend:**
+* **Платформа и язык:** C# / ASP.NET Core (.NET 8.0)
+* **База данных:** SQLite
+* **ORM:** Entity Framework Core 9
+* **Аутентификация и безопасность:** JWT Bearer (`Microsoft.AspNetCore.Authentication.JwtBearer`), хэширование паролей через `BCrypt.Net-Next`
+* **Валидация и маппинг:** FluentValidation, AutoMapper
+* **Документация API:** Swagger / OpenAPI (`Swashbuckle.AspNetCore`)
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## 📦 Требования для запуска
+Перед началом работы убедитесь, что у вас установлены:
+* [Node.js](https://nodejs.org/) (рекомендуется LTS-версия 20.x или 22.x)
+* [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+* Git
 
-Note: This will impact Vite dev & build performances.
+---
 
-## Expanding the ESLint configuration
+## 🛠 Установка и запуск
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 1. Запуск серверной части (Backend)
+1. Откройте терминал и перейдите в папку с бэкендом (там, где находится файл `.sln` или `.csproj`).
+2. Восстановите зависимости и примените миграции базы данных SQLite (если база еще не создана):
+   ```bash
+   dotnet restore
+   dotnet ef database update
+   ```
+3. Запустите сервер:
+   ```bash
+   dotnet run
+   ```
+   Сервер запустится (обычно на `https://localhost:7xxx` или `http://localhost:5xxx`). Документация Swagger будет доступна по адресу `http://localhost:5xxx/swagger`. Запомните порт бэкенда — он понадобится для настройки фронтенда.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 2. Запуск клиентской части (Frontend)
+1. Откройте новое окно терминала и перейдите в папку с фронтендом (`habit-tracker`).
+2. Установите зависимости:
+   ```bash
+   npm install
+   ```
+3. Запустите dev-сервер Vite:
+   ```bash
+   npm run dev
+   ```
+   Приложение будет доступно по адресу, указанному в консоли (обычно `http://localhost:5173`).
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📂 Структура проекта (Frontend)
+
+```text
+habit-tracker/
+├── src/
+│   ├── components/     # Переиспользуемые UI-компоненты (кнопки, инпуты, карточки)
+│   │   └── ui/         # Базовые компоненты shadcn/ui
+│   ├── pages/          # Страницы приложения (Login, Register, Dashboard и т.д.)
+│   ├── lib/            # Вспомогательные функции (утилиты, axios-клиенты)
+│   ├── hooks/          # Кастомные React-хуки
+│   ├── App.tsx         # Корневой компонент с роутингом
+│   ├── main.tsx        # Точка входа в приложение
+│   └── index.css       # Глобальные стили и переменные Tailwind
+├── package.json
+├── vite.config.ts
+└── tailwind.config.js
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ⚠️ Решение частых проблем (Troubleshooting)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Если вы столкнулись с ошибками при первом запуске, проверьте следующие пункты:
+
+### 1. Ошибка `npm warn install-scripts ... install scripts blocked`
+В новых версиях npm (11+) скрипты установки некоторых пакетов блокируются в целях безопасности. Это ломает работу `esbuild` (критически важный для Vite).  
+**Решение:** Разрешите установку скриптов командой:
+```bash
+npm install-scripts approve esbuild @parcel/watcher
 ```
+Затем удалите `node_modules` и `package-lock.json`, и выполните `npm install` заново.
+
+### 2. Ошибка `Cannot find module ... vite.js` или странные проблемы с путями
+Убедитесь, что в полном пути к папке проекта нет символа амперсанда (`&`) или других спецсимволов (например, `D:\Habit tracker Front&Back\` — вызовет ошибку).  
+**Решение:** Переименуйте папки так, чтобы путь выглядел как `D:\HabitTrackerProject\habit-tracker`.
+
+### 3. Проблемы с CORS (Ошибка запросов к API)
+Если фронтенд не может достучаться до бэкенда, убедитесь, что в настройках C# (в `Program.cs`) разрешен запрос с порта Vite (`http://localhost:5173`).
+
+### 4. Устаревшие данные браузеров
+Если в консоли висит предупреждение `[baseline-browser-mapping] The data in this module is over two months old`, просто обновите пакет:
+```bash
+npm i baseline-browser-mapping@latest -D
+```
+
+---
+
+## 📄 Лицензия
+Этот проект распространяется под лицензией MIT. Подробности смотрите в файле `LICENSE` (если он есть).
